@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Pessoas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --danger-color: #dc3545;
+            --background-color: #f0f2f5;
+            --card-background: #ffffff;
+            --text-color: #333333;
+            --border-color: #e0e0e0;
+            --shadow-medium: rgba(0, 0, 0, 0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: var(--card-background);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px var(--shadow-medium);
+        }
+
+        h1, h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        h3 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+            font-weight: 400;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 400;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+            outline: none;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 10px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+        }
+
+
+        .btn-edit {
+            padding: 5px 10px;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-edit:hover {
+            background-color: #5a6268;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+        }
+        .hidden {
+            display: none;
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .search-group {
+            flex-grow: 1;
+            margin-bottom: 0 !important;
+        }
+
+        .table-header .btn {
+            margin-top: 0; /* Override default margin */
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .address-grid {
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .form-grid,
+            .address-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            margin-top: 30px;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .table th, .table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .table th {
+            background-color: #f8f9fa;
+        }
+
+        .btn-delete {
+            padding: 5px 10px;
+            background-color: var(--danger-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+
+        .actions-cell {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Formulário de Cadastro</h1>
+        <form id="cadastroForm">
+            <div class="form-group">
+                <label for="nome">Nome Completo</label>
+                <input type="text" id="nome" class="form-control" placeholder="Digite seu nome" required>
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" class="form-control" placeholder="seu@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="telefone">Telefone</label>
+                    <input type="tel" id="telefone" class="form-control" placeholder="(00) 00000-0000" maxlength="15">
+                </div>
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="cnsCpf">CNS/CPF</label>
+                    <input type="text" id="cnsCpf" class="form-control" placeholder="Digite o CNS ou CPF" required maxlength="15">
+                </div>
+                <div class="form-group">
+                    <label for="nascimento">Data de Nascimento</label>
+                    <input type="date" id="nascimento" class="form-control" required>
+                </div>
+            </div>
+
+            <hr style="margin: 30px 0; border: 0; border-top: 1px solid var(--border-color);">
+            <h3>Endereço</h3>
+
+            <div class="form-group">
+                <label for="cep">CEP</label>
+                <input type="text" id="cep" class="form-control" placeholder="Digite o CEP para autocompletar" maxlength="9">
+            </div>
+            <div class="address-grid">
+                <div class="form-group">
+                    <label for="logradouro">Logradouro</label>
+                    <input type="text" id="logradouro" class="form-control" placeholder="Rua, Avenida...">
+                </div>
+                <div class="form-group">
+                    <label for="numero">Número</label>
+                    <input type="text" id="numero" class="form-control" placeholder="Nº">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="bairro">Bairro</label>
+                <input type="text" id="bairro" class="form-control">
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" id="btnSubmit" class="btn btn-primary">Salvar Cadastro</button>
+                <button type="button" id="btnCancel" class="btn btn-secondary hidden">Cancelar</button>
+            </div>
+        </form>
+
+        <div class="table-responsive">
+            <h2>Pessoas Cadastradas</h2>
+            <div class="table-header">
+                <div class="form-group search-group">
+                    <label for="searchInput">Buscar por Nome ou CNS/CPF</label>
+                    <input type="text" id="searchInput" class="form-control" placeholder="Digite para buscar...">
+                </div>
+                <div class="table-actions">
+                    <button id="importCsvBtn" class="btn btn-secondary">Importar CSV</button>
+                    <button id="exportCsvBtn" class="btn btn-secondary">Exportar para CSV</button>
+                </div>
+            </div>
+            <input type="file" id="csvFileInput" class="hidden" accept=".csv">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>CNS/CPF</th>
+                        <th>Telefone</th>
+                        <th>Endereço</th>
+                        <th>Ação</th>
+                    </tr>
+                </thead>
+                <tbody id="listaPessoas">
+                    <!-- Os dados serão inseridos aqui via JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('cadastroForm');
+            const listaPessoas = document.getElementById('listaPessoas');
+            const btnSubmit = document.getElementById('btnSubmit');
+            const btnCancel = document.getElementById('btnCancel');
+            const telefoneInput = document.getElementById('telefone');
+            const importCsvBtn = document.getElementById('importCsvBtn');
+            const csvFileInput = document.getElementById('csvFileInput');
+            const exportCsvBtn = document.getElementById('exportCsvBtn');
+            const searchInput = document.getElementById('searchInput');
+            const cnsCpfInput = document.getElementById('cnsCpf');
+            const cepInput = document.getElementById('cep');
+
+            // URL da nossa API backend
+            const API_URL = 'http://localhost:3000/api/pessoas';
+
+            // Array local para armazenar os dados do servidor (cache)
+            let pessoas = [];
+            // Variável para controlar o índice do item em edição
+            let editingId = null;
+
+            // --- Funções de Formatação ---
+            const formatarTelefone = (value) => {
+                if (!value) return "";
+                value = value.replace(/\D/g, '');
+                value = value.replace(/^(\d{2})(\d)/, "($1) $2");
+                value = value.replace(/(\d{5})(\d)/, "$1-$2");
+                return value;
+            };
+
+            const formatarCep = (cep) => {
+                if (!cep) return "";
+                cep = cep.replace(/\D/g, '');
+                cep = cep.replace(/^(\d{5})(\d)/, '$1-$2');
+                return cep;
+            };
+
+            const formatarCpf = (cpf) => {
+                if (!cpf) return "";
+                cpf = cpf.replace(/\D/g, '');
+                cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
+                cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
+                cpf = cpf.replace(/(\d{3})(\d{2})$/, "$1-$2");
+                return cpf;
+            };
+
+            const formatarDocumento = (doc) => {
+                if (!doc) return "";
+                doc = doc.replace(/\D/g, '');
+                // Se tiver 11 dígitos, formata como CPF. Senão (CNS), retorna como está.
+                if (doc.length === 11) return formatarCpf(doc);
+                return doc;
+            };
+
+            // --- Funções de Validação ---
+            const validarCPF = (cpf) => {
+                cpf = String(cpf).replace(/[^\d]+/g, '');
+                if (cpf === '') return false;
+                // Elimina CPFs invalidos conhecidos
+                if (cpf.length !== 11 ||
+                    cpf === "00000000000" ||
+                    cpf === "11111111111" ||
+                    cpf === "22222222222" ||
+                    cpf === "33333333333" ||
+                    cpf === "44444444444" ||
+                    cpf === "55555555555" ||
+                    cpf === "66666666666" ||
+                    cpf === "77777777777" ||
+                    cpf === "88888888888" ||
+                    cpf === "99999999999")
+                    return false;
+                // Valida 1o digito
+                let add = 0;
+                for (let i = 0; i < 9; i++) add += parseInt(cpf.charAt(i)) * (10 - i);
+                let rev = 11 - (add % 11);
+                if (rev === 10 || rev === 11) rev = 0;
+                if (rev !== parseInt(cpf.charAt(9))) return false;
+                // Valida 2o digito
+                add = 0;
+                for (let i = 0; i < 10; i++) add += parseInt(cpf.charAt(i)) * (11 - i);
+                rev = 11 - (add % 11);
+                if (rev === 10 || rev === 11) rev = 0;
+                if (rev !== parseInt(cpf.charAt(10))) return false;
+                return true;
+            };
+
+            const importarDeCSV = async (event) => {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = async (e) => {
+                    const text = e.target.result;
+                    const lines = text.split('\n').filter(line => line.trim() !== '');
+
+                    if (lines.length <= 1) {
+                        alert('Arquivo CSV vazio ou com formato inválido.');
+                        return;
+                    }
+
+                    const parseCSVRow = (row) => {
+                        const regex = /("([^"]|"")*"|[^,]*)(,|$)/g;
+                        const matches = [];
+                        let match;
+                        while (match = regex.exec(row)) {
+                            let value = match[1];
+                            if (value.startsWith('"') && value.endsWith('"')) {
+                                value = value.slice(1, -1).replace(/""/g, '"');
+                            }
+                            matches.push(value);
+                            if (match[3] === '') break;
+                        }
+                        return matches;
+                    };
+
+                    const novosRegistros = [];
+                    const registrosDuplicados = [];
+
+                    for (let i = 1; i < lines.length; i++) { // Pula o cabeçalho
+                        const values = parseCSVRow(lines[i].trim());
+                        if (values.length < 9) continue;
+
+                        const cnsCpf = String(values[3] || '').replace(/\D/g, '');
+                        if (!cnsCpf) continue;
+
+                        const isDuplicate = pessoas.some(p => p.cnsCpf === cnsCpf);
+                        if (isDuplicate) {
+                            registrosDuplicados.push(values[0]);
+                        } else {
+                            novosRegistros.push({
+                                nome: values[0] || '', email: values[1] || '',
+                                telefone: String(values[2] || '').replace(/\D/g, ''),
+                                cnsCpf: cnsCpf, nascimento: values[4] || '',
+                                cep: String(values[5] || '').replace(/\D/g, ''),
+                                logradouro: values[6] || '', numero: values[7] || '',
+                                bairro: values[8] || ''
+                            });
+                        }
+                    }
+
+                    if (novosRegistros.length === 0) {
+                        alert('Nenhum novo registro para importar. Os registros do arquivo podem já existir.');
+                        return;
+                    }
+
+                    let msg = `${novosRegistros.length} novo(s) registro(s) para importar.\n${registrosDuplicados.length} registro(s) duplicado(s) foram ignorados.\nDeseja continuar?`;
+                    if (confirm(msg)) {
+                        try {
+                            const response = await fetch(`${API_URL}/batch-import`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(novosRegistros)
+                            });
+                            if (!response.ok) throw new Error('Falha na importação');
+                            alert('Dados importados com sucesso!');
+                            carregarPessoas(); // Recarrega a lista do servidor
+                        } catch (error) {
+                            console.error('Erro ao importar CSV:', error);
+                            alert('Ocorreu um erro ao importar os dados.');
+                        }
+                    }
+                };
+                reader.readAsText(file, 'UTF-8');
+                csvFileInput.value = ''; // Permite re-selecionar o mesmo arquivo
+            };
+
+            const exportarParaCSV = () => {
+                if (pessoas.length === 0) {
+                    alert('Não há dados para exportar.');
+                    return;
+                }
+
+                const headers = [
+                    "Nome", "Email", "Telefone", "CNS/CPF", "Data de Nascimento",
+                    "CEP", "Logradouro", "Número", "Bairro"
+                ];
+
+                // Função para garantir que os valores com vírgula fiquem entre aspas
+                const escapeCSV = (value) => {
+                    const str = String(value || '');
+                    if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+                        return `"${str.replace(/"/g, '""')}"`;
+                    }
+                    return str;
+                };
+
+                const csvRows = [
+                    headers.join(','), // Cabeçalho
+                    ...pessoas.map(p => [
+                        escapeCSV(p.nome),
+                        escapeCSV(p.email),
+                        escapeCSV(formatarTelefone(p.telefone)), // Exporta formatado
+                        escapeCSV(p.cnsCpf), // Exporta apenas números
+                        escapeCSV(p.nascimento),
+                        escapeCSV(formatarCep(p.cep)), // Exporta formatado
+                        escapeCSV(p.logradouro),
+                        escapeCSV(p.numero),
+                        escapeCSV(p.bairro)
+                    ].join(','))
+                ];
+
+                const blob = new Blob([csvRows.join('\n')], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'cadastros.csv';
+                link.click();
+            };
+
+            const renderizarTabela = () => {
+                const filtro = searchInput.value.toLowerCase().trim();
+                const pessoasFiltradas = pessoas.filter(pessoa => {
+                    const nome = pessoa.nome || '';
+                    const cnsCpf = pessoa.cnsCpf || '';
+                    return nome.toLowerCase().includes(filtro) || cnsCpf.includes(filtro);
+                });
+
+                listaPessoas.innerHTML = '';
+                if (pessoasFiltradas.length === 0) {
+                    const mensagem = pessoas.length === 0 ? 'Nenhuma pessoa cadastrada.' : 'Nenhuma pessoa encontrada para o filtro atual.';
+                    listaPessoas.innerHTML = `<tr><td colspan="5" style="text-align:center;">${mensagem}</td></tr>`;
+                    return;
+                }
+
+                pessoasFiltradas.forEach(pessoa => {
+                    const tr = document.createElement('tr');
+                    const endereco = `${pessoa.logradouro || ''}, ${pessoa.numero || ''} - ${pessoa.bairro || ''}`;
+                    tr.innerHTML = `
+                        <td>${pessoa.nome || ''}</td>
+                        <td>${formatarDocumento(pessoa.cnsCpf || '')}</td>
+                        <td>${formatarTelefone(pessoa.telefone || '')}</td>
+                        <td>${endereco.length > 5 ? endereco : 'Não informado'}</td>
+                        <td class="actions-cell">
+                            <button class="btn-edit" data-id="${pessoa.id}">Editar</button>
+                            <button class="btn-delete" data-id="${pessoa.id}">Excluir</button>
+                        </td>
+                    `;
+                    listaPessoas.appendChild(tr);
+                });
+            };
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const cnsCpfValue = cnsCpfInput.value.replace(/\D/g, '');
+
+                // --- Validações ---
+                // 1. Validação do CPF (se for um CPF)
+                if (cnsCpfValue.length === 11 && !validarCPF(cnsCpfValue)) {
+                    alert('CPF inválido. Por favor, verifique o número digitado.');
+                    cnsCpfInput.focus();
+                    return;
+                }
+
+                // 2. Validação de duplicidade
+                const isDuplicate = pessoas.some(
+                    (pessoa) => pessoa.cnsCpf === cnsCpfValue && pessoa.id !== editingId
+                );
+
+                if (isDuplicate) {
+                    alert('Este CNS/CPF já está cadastrado.');
+                    cnsCpfInput.focus();
+                    return;
+                }
+
+                const pessoaData = {
+                    nome: document.getElementById('nome').value.trim(),
+                    email: document.getElementById('email').value.trim(),
+                    telefone: document.getElementById('telefone').value.replace(/\D/g, ''),
+                    cnsCpf: cnsCpfValue,
+                    nascimento: document.getElementById('nascimento').value,
+                    cep: document.getElementById('cep').value.trim(),
+                    logradouro: document.getElementById('logradouro').value.trim(),
+                    numero: document.getElementById('numero').value.trim(),
+                    bairro: document.getElementById('bairro').value.trim(),
+                };
+
+                try {
+                    let response;
+                    if (editingId !== null) {
+                        // Atualiza a pessoa existente
+                        response = await fetch(`${API_URL}/${editingId}`, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(pessoaData)
+                        });
+                    } else {
+                        // Adiciona uma nova pessoa
+                        response = await fetch(API_URL, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(pessoaData)
+                        });
+                    }
+
+                    if (!response.ok) {
+                        throw new Error('Falha ao salvar os dados.');
+                    }
+
+                    resetFormState();
+                    carregarPessoas(); // Recarrega a lista do servidor
+                } catch (error) {
+                    console.error('Erro ao salvar:', error);
+                    alert('Não foi possível salvar os dados no servidor.');
+                }
+            });
+
+            const startEdit = (id) => {
+                editingId = id;
+                const pessoa = pessoas.find(p => p.id === id);
+                if (!pessoa) return;
+
+                // Preenche o formulário com os dados da pessoa
+                document.getElementById('nome').value = pessoa.nome || '';
+                document.getElementById('email').value = pessoa.email || '';
+                document.getElementById('telefone').value = formatarTelefone(pessoa.telefone || '');
+                document.getElementById('cnsCpf').value = formatarDocumento(pessoa.cnsCpf || '');
+                document.getElementById('nascimento').value = pessoa.nascimento || '';
+                document.getElementById('cep').value = formatarCep(pessoa.cep || '');
+                document.getElementById('logradouro').value = pessoa.logradouro || '';
+                document.getElementById('numero').value = pessoa.numero || '';
+                document.getElementById('bairro').value = pessoa.bairro || '';
+
+                // Atualiza a interface para o modo de edição
+                btnSubmit.textContent = 'Atualizar Cadastro';
+                btnCancel.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
+            const resetFormState = () => {
+                form.reset();
+                editingId = null;
+                btnSubmit.textContent = 'Salvar Cadastro';
+                btnCancel.classList.add('hidden');
+            };
+
+            btnCancel.addEventListener('click', resetFormState);
+
+            listaPessoas.addEventListener('click', (e) => {
+                const target = e.target;
+                if (target.classList.contains('btn-edit')) {
+                    const id = parseInt(target.getAttribute('data-id'), 10);
+                    startEdit(id);
+                } else if (target.classList.contains('btn-delete')) {
+                    const id = parseInt(target.getAttribute('data-id'), 10);
+                    if (confirm('Tem certeza que deseja excluir este cadastro?')) {
+                        deletePessoa(id);
+                    }
+                }
+            });
+
+            const deletePessoa = async (id) => {
+                try {
+                    const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+                    if (!response.ok) throw new Error('Falha ao deletar');
+                    
+                    // Se o item deletado estava em edição, reseta o formulário
+                    if (editingId === id) resetFormState();
+                    
+                    carregarPessoas(); // Recarrega a lista
+                } catch (error) {
+                    console.error('Erro ao deletar:', error);
+                    alert('Não foi possível deletar o registro.');
+                }
+            };
+
+            const carregarPessoas = async () => {
+                try {
+                    const response = await fetch(API_URL);
+                    pessoas = await response.json();
+                    renderizarTabela();
+                } catch (error) {
+                    console.error('Erro ao carregar pessoas:', error);
+                    listaPessoas.innerHTML = `<tr><td colspan="5" style="text-align:center; color: red;">Falha ao conectar com o servidor.</td></tr>`;
+                }
+            };
+
+            importCsvBtn.addEventListener('click', () => csvFileInput.click());
+            csvFileInput.addEventListener('change', importarDeCSV);
+
+            exportCsvBtn.addEventListener('click', exportarParaCSV);
+
+            searchInput.addEventListener('input', renderizarTabela);
+
+            // --- Event Listeners para Máscaras ---
+            telefoneInput.addEventListener('input', (e) => {
+                e.target.value = formatarTelefone(e.target.value);
+            });
+
+            cnsCpfInput.addEventListener('input', (e) => {
+                let value = e.target.value.replace(/\D/g, '');
+                // Aplica a máscara de CPF apenas se o comprimento for adequado
+                if (value.length <= 11) {
+                    e.target.value = formatarCpf(value);
+                } else {
+                    // Se for maior (provavelmente CNS), apenas mantém os números
+                    e.target.value = value;
+                }
+            });
+
+            cepInput.addEventListener('input', (e) => {
+                e.target.value = formatarCep(e.target.value);
+            });
+
+            // Função para buscar e preencher endereço via CEP
+            const preencherEndereco = (data) => {
+                if (data.erro) {
+                    alert('CEP não encontrado. Por favor, verifique o número digitado.');
+                    return;
+                }
+                document.getElementById('logradouro').value = data.logradouro || '';
+                document.getElementById('bairro').value = data.bairro || '';
+                // Alguns campos como cidade e UF não estão no formulário, mas poderiam ser adicionados
+                // document.getElementById('cidade').value = data.localidade || '';
+                // document.getElementById('uf').value = data.uf || '';
+                document.getElementById('numero').focus(); // Move o foco para o campo de número
+            };
+
+            const buscarCep = async () => {
+                const cep = cepInput.value.replace(/\D/g, ''); // Remove caracteres não numéricos
+                if (cep.length !== 8) {
+                    return; // CEP inválido
+                }
+
+                cepInput.disabled = true;
+                cepInput.value = "Buscando...";
+
+                try {
+                    const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+                    const data = await response.json();
+                    preencherEndereco(data);
+                } catch (error) {
+                    alert('Não foi possível buscar o CEP. Tente novamente.');
+                    console.error("Erro ao buscar CEP:", error);
+                } finally {
+                    cepInput.disabled = false;
+                    cepInput.value = formatarCep(cep);
+                }
+            };
+
+            cepInput.addEventListener('blur', buscarCep);
+
+            // Carrega os dados do servidor ao iniciar a página
+            carregarPessoas();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,5 @@
+# Ignorar a pasta de dependências
+/node_modules
+
+# Ignorar o arquivo do banco de dados local
+/database.db
