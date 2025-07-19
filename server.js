@@ -6,7 +6,7 @@ const path = require('path');
 const { open } = require('sqlite');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // --- Database Setup ---
 let db;
@@ -41,6 +41,17 @@ async function setupDatabase() {
 // Middlewares para permitir comunicação e uso de JSON
 app.use(cors());
 app.use(express.json());
+
+// --- Servir Arquivos Estáticos (o Frontend) ---
+// Esta linha diz ao Express para servir os arquivos da pasta atual (onde está o server.js)
+// Isso fará com que o cadastro_pessoal.html seja acessível.
+app.use(express.static(path.join(__dirname)));
+
+// --- Rota Principal (Frontend) ---
+// Quando alguém acessar a raiz do site, envie o arquivo do formulário.
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'cadastro_pessoal.html'));
+});
 
 
 // --- Rotas da API (Endpoints) ---
