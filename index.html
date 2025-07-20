@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #007bff;
+            --primary-color: #009688; /* Verde SUS Moderno */
             --secondary-color: #6c757d;
             --danger-color: #dc3545;
             --background-color: #f0f2f5;
@@ -75,7 +75,7 @@
 
         .form-control:focus {
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+            box-shadow: 0 0 0 3px rgba(0, 150, 136, 0.25);
             outline: none;
         }
 
@@ -97,8 +97,9 @@
         }
 
         .btn-primary:hover {
-            background-color: #0056b3;
+            background-color: #00796b; /* Tom mais escuro do verde */
             transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         .btn-secondary {
@@ -108,6 +109,7 @@
         .btn-secondary:hover {
             background-color: #5a6268;
             transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
         }
 
 
@@ -750,13 +752,4 @@
     </script>
 </body>
 
-</html>def eh_primo(n):
-    if n <= 1:
-        return False
-    for i in range(2, int(n ** 0.5) + 1):
-        if n % i == 0:
-            return False
-    return True
-
-numero = 17
-print(f"{numero} é primo? {eh_primo(numero)}")  # Saída: "17 é primo? True"
+</html>
