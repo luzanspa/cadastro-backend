@@ -24,19 +24,41 @@ async function setupDatabase() {
     console.log('Conectado ao banco de dados PostgreSQL com sucesso!');
     
     // Cria a tabela 'pessoas' se ela não existir.
-    // Note as pequenas mudanças na sintaxe para PostgreSQL.
+    // Adicionando as novas colunas
     await client.query(`
         CREATE TABLE IF NOT EXISTS pessoas (
             id SERIAL PRIMARY KEY,
+            data_cadastro TEXT,
             nome TEXT NOT NULL,
-            email TEXT NOT NULL,
-            telefone TEXT,
+            email TEXT, -- Adicionado campo email
             cnsCpf TEXT NOT NULL UNIQUE,
-            nascimento TEXT,
-            cep TEXT,
+            sexo TEXT,
+            data_nascimento TEXT,
+            nacionalidade TEXT,
+            raca_cor TEXT, -- Novo campo
+            etnia TEXT, -- Novo campo
+            cep TEXT, -- Adicionado campo CEP
             logradouro TEXT,
             numero TEXT,
-            bairro TEXT
+            bairro_corrego TEXT, -- Renomeado de 'bairro' para 'bairro_corrego'
+            complemento TEXT, -- Novo campo
+            cod_logradouro TEXT, -- Novo campo
+            cidade TEXT, -- Novo campo
+            uf TEXT, -- Novo campo adicionado
+            telefone TEXT,
+            data_atendimento TEXT, -- Novo campo
+            local_atendimento TEXT, -- Novo campo
+            distancia_km TEXT, -- Novo campo
+            procedimentos TEXT, -- Novo campo
+            horario TEXT, -- Novo campo
+            tipo_atendimento TEXT, -- Novo campo
+            tipo_atendimento_cod TEXT, -- Novo campo
+            transporte TEXT, -- Novo campo
+            motorista TEXT, -- Novo campo
+            hora_saida TEXT, -- Novo campo
+            paciente_principal TEXT, -- Novo campo
+            acompanhantes_vinculados TEXT, -- Novo campo
+            observacao TEXT -- Novo campo
         )
     `);
     client.release(); // Libera o cliente de volta para o pool
@@ -48,7 +70,7 @@ app.use(express.json());
 
 // --- Servir Arquivos Estáticos (o Frontend) ---
 // Esta linha diz ao Express para servir os arquivos da pasta atual (onde está o server.js)
-// Isso fará com que o cadastro_pessoal.html seja acessível.
+// Isso fará com que o index.html seja acessível.
 app.use(express.static(path.join(__dirname)));
 
 // --- Rota Principal (Frontend) ---
@@ -74,11 +96,33 @@ app.get('/api/pessoas', async (req, res) => {
 // [POST] /api/pessoas - Cria uma nova pessoa
 app.post('/api/pessoas', async (req, res) => {
     try {
-        const { nome, email, telefone, cnsCpf, nascimento, cep, logradouro, numero, bairro } = req.body;
-        const sql = `INSERT INTO pessoas (nome, email, telefone, cnsCpf, nascimento, cep, logradouro, numero, bairro) 
-                     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-                     RETURNING *`; // RETURNING * retorna a linha inserida
-        const values = [nome, email, telefone, cnsCpf, nascimento, cep, logradouro, numero, bairro];
+        const { 
+            data_cadastro, nome, email, cnsCpf, sexo, data_nascimento, nacionalidade, 
+            raca_cor, etnia, cep, logradouro, numero, bairro_corrego, complemento, 
+            cod_logradouro, cidade, uf, telefone, data_atendimento, local_atendimento, 
+            distancia_km, procedimentos, horario, tipo_atendimento, tipo_atendimento_cod, 
+            transporte, motorista, hora_saida, paciente_principal, acompanhantes_vinculados, observacao 
+        } = req.body;
+        
+        const sql = `INSERT INTO pessoas (
+            data_cadastro, nome, email, cnsCpf, sexo, data_nascimento, nacionalidade, 
+            raca_cor, etnia, cep, logradouro, numero, bairro_corrego, complemento, 
+            cod_logradouro, cidade, uf, telefone, data_atendimento, local_atendimento, 
+            distancia_km, procedimentos, horario, tipo_atendimento, tipo_atendimento_cod, 
+            transporte, motorista, hora_saida, paciente_principal, acompanhantes_vinculados, observacao
+        ) VALUES (
+            $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, 
+            $21, $22, $23, $24, $25, $26, $27, $28, $29, $30, $31
+        ) RETURNING *`; 
+        
+        const values = [
+            data_cadastro, nome, email, cnsCpf, sexo, data_nascimento, nacionalidade, 
+            raca_cor, etnia, cep, logradouro, numero, bairro_corrego, complemento, 
+            cod_logradouro, cidade, uf, telefone, data_atendimento, local_atendimento, 
+            distancia_km, procedimentos, horario, tipo_atendimento, tipo_atendimento_cod, 
+            transporte, motorista, hora_saida, paciente_principal, acompanhantes_vinculados, observacao
+        ];
+        
         const result = await pool.query(sql, values);
         res.status(201).json(result.rows[0]);
     } catch (error) {
@@ -94,13 +138,33 @@ app.post('/api/pessoas', async (req, res) => {
 app.put('/api/pessoas/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const { nome, email, telefone, cnsCpf, nascimento, cep, logradouro, numero, bairro } = req.body;
+        const { 
+            data_cadastro, nome, email, cnsCpf, sexo, data_nascimento, nacionalidade, 
+            raca_cor, etnia, cep, logradouro, numero, bairro_corrego, complemento, 
+            cod_logradouro, cidade, uf, telefone, data_atendimento, local_atendimento, 
+            distancia_km, procedimentos, horario, tipo_atendimento, tipo_atendimento_cod, 
+            transporte, motorista, hora_saida, paciente_principal, acompanhantes_vinculados, observacao 
+        } = req.body;
+        
         const sql = `UPDATE pessoas SET 
-                        nome = $1, email = $2, telefone = $3, cnsCpf = $4, nascimento = $5, 
-                        cep = $6, logradouro = $7, numero = $8, bairro = $9
-                     WHERE id = $10
-                     RETURNING *`;
-        const values = [nome, email, telefone, cnsCpf, nascimento, cep, logradouro, numero, bairro, id];
+            data_cadastro = $1, nome = $2, email = $3, cnsCpf = $4, sexo = $5, data_nascimento = $6, 
+            nacionalidade = $7, raca_cor = $8, etnia = $9, cep = $10, logradouro = $11, numero = $12, 
+            bairro_corrego = $13, complemento = $14, cod_logradouro = $15, cidade = $16, uf = $17, telefone = $18, 
+            data_atendimento = $19, local_atendimento = $20, distancia_km = $21, procedimentos = $22, 
+            horario = $23, tipo_atendimento = $24, tipo_atendimento_cod = $25, transporte = $26, 
+            motorista = $27, hora_saida = $28, paciente_principal = $29, acompanhantes_vinculados = $30, 
+            observacao = $31
+        WHERE id = $32
+        RETURNING *`;
+        
+        const values = [
+            data_cadastro, nome, email, cnsCpf, sexo, data_nascimento, nacionalidade, 
+            raca_cor, etnia, cep, logradouro, numero, bairro_corrego, complemento, 
+            cod_logradouro, cidade, uf, telefone, data_atendimento, local_atendimento, 
+            distancia_km, procedimentos, horario, tipo_atendimento, tipo_atendimento_cod, 
+            transporte, motorista, hora_saida, paciente_principal, acompanhantes_vinculados, observacao, id
+        ];
+        
         const result = await pool.query(sql, values);
         if (result.rowCount === 0) {
             return res.status(404).json({ message: 'Pessoa não encontrada.' });
@@ -135,13 +199,30 @@ app.post('/api/pessoas/batch-import', async (req, res) => {
     const client = await pool.connect();
     try {
         const novosRegistros = req.body;
-        const sql = `INSERT INTO pessoas (nome, email, telefone, cnsCpf, nascimento, cep, logradouro, numero, bairro) 
-                     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-                     ON CONFLICT (cnsCpf) DO NOTHING`; // Ignora inserção se o cnsCpf já existir
+        // Colunas que serão inseridas. Certifique-se de que a ordem corresponde à do VALUES
+        const sql = `INSERT INTO pessoas (
+            data_cadastro, nome, email, telefone, cnsCpf, sexo, data_nascimento, nacionalidade, 
+            raca_cor, etnia, cep, logradouro, numero, bairro_corrego, complemento, 
+            cod_logradouro, cidade, uf, data_atendimento, local_atendimento, distancia_km, 
+            procedimentos, horario, tipo_atendimento, tipo_atendimento_cod, transporte, 
+            motorista, hora_saida, paciente_principal, acompanhantes_vinculados, observacao
+        ) VALUES (
+            $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, 
+            $21, $22, $23, $24, $25, $26, $27, $28, $29, $30, $31
+        ) ON CONFLICT (cnsCpf) DO NOTHING`; // Ignora inserção se o cnsCpf já existir
+        
         let importadosCount = 0;
         await client.query('BEGIN');
         for (const registro of novosRegistros) {
-            const values = [registro.nome, registro.email, registro.telefone, registro.cnsCpf, registro.nascimento, registro.cep, registro.logradouro, registro.numero, registro.bairro];
+            const values = [
+                registro.data_cadastro, registro.nome, registro.email, registro.telefone, registro.cnsCpf, 
+                registro.sexo, registro.data_nascimento, registro.nacionalidade, registro.raca_cor, 
+                registro.etnia, registro.cep, registro.logradouro, registro.numero, registro.bairro_corrego, 
+                registro.complemento, registro.cod_logradouro, registro.cidade, registro.uf, registro.data_atendimento, 
+                registro.local_atendimento, registro.distancia_km, registro.procedimentos, registro.horario, 
+                registro.tipo_atendimento, registro.tipo_atendimento_cod, registro.transporte, registro.motorista, 
+                registro.hora_saida, registro.paciente_principal, registro.acompanhantes_vinculados, registro.observacao
+            ];
             const result = await client.query(sql, values);
             if (result.rowCount > 0) importadosCount++;
         }

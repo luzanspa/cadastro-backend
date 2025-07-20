@@ -33,7 +33,7 @@
         }
 
         .container {
-            max-width: 800px;
+            max-width: 1200px; /* Aumentado para acomodar mais campos na tabela */
             margin: 20px auto;
             background-color: var(--card-background);
             padding: 30px;
@@ -168,7 +168,7 @@
             gap: 15px;
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 768px) { /* Ajuste para telas menores */
             .form-grid,
             .address-grid {
                 grid-template-columns: 1fr;
@@ -184,11 +184,13 @@
             width: 100%;
             border-collapse: collapse;
             text-align: left;
+            min-width: 1200px; /* Garante que a tabela não fique muito estreita */
         }
 
         .table th, .table td {
             padding: 12px 15px;
             border-bottom: 1px solid var(--border-color);
+            white-space: nowrap; /* Impede que o texto quebre em várias linhas */
         }
 
         .table th {
@@ -220,31 +222,53 @@
 <body>
     <div class="container">
         <h1>Formulário de Cadastro</h1>
-        <form id="cadastroForm">
+    <form id="cadastroForm">
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="dataCadastro">Data Cadastro</label>
+                <input type="date" id="dataCadastro" class="form-control" />
+            </div>
             <div class="form-group">
                 <label for="nome">Nome Completo</label>
-                <input type="text" id="nome" class="form-control" placeholder="Digite seu nome" required>
+                <input type="text" id="nome" class="form-control" placeholder="Digite o nome completo" required />
             </div>
-            <div class="form-grid">
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" class="form-control" placeholder="seu@email.com" required>
-                </div>
-                <div class="form-group">
-                    <label for="telefone">Telefone</label>
-                    <input type="tel" id="telefone" class="form-control" placeholder="(00) 00000-0000" maxlength="15">
-                </div>
+            <div class="form-group">
+                <label for="cnsCpf">CNS/CPF</label>
+                <input type="text" id="cnsCpf" class="form-control" placeholder="Digite o CNS ou CPF" required maxlength="15" />
             </div>
-            <div class="form-grid">
-                <div class="form-group">
-                    <label for="cnsCpf">CNS/CPF</label>
-                    <input type="text" id="cnsCpf" class="form-control" placeholder="Digite o CNS ou CPF" required maxlength="15">
-                </div>
-                <div class="form-group">
-                    <label for="nascimento">Data de Nascimento</label>
-                    <input type="date" id="nascimento" class="form-control" required>
-                </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" class="form-control" placeholder="Digite o email" />
             </div>
+        </div>
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="sexo">Sexo</label>
+                <select id="sexo" class="form-control">
+                    <option value="">Selecione</option>
+                    <option value="Masculino">Masculino</option>
+                    <option value="Feminino">Feminino</option>
+                    <option value="Outro">Outro</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="dataNascimento">Data de Nascimento</label>
+                <input type="date" id="dataNascimento" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <label for="nacionalidade">Nacionalidade</label>
+                <input type="text" id="nacionalidade" class="form-control" placeholder="Digite a nacionalidade" />
+            </div>
+            <div class="form-group">
+                <label for="racaCor">Raça/Cor</label>
+                <input type="text" id="racaCor" class="form-control" placeholder="Digite a raça/cor" />
+            </div>
+            <div class="form-group">
+                <label for="etnia">Etnia</label>
+                <input type="text" id="etnia" class="form-control" placeholder="Digite a etnia" />
+            </div>
+        </div>
 
             <hr style="margin: 30px 0; border: 0; border-top: 1px solid var(--border-color);">
             <h3>Endereço</h3>
@@ -253,7 +277,7 @@
                 <label for="cep">CEP</label>
                 <input type="text" id="cep" class="form-control" placeholder="Digite o CEP para autocompletar" maxlength="9">
             </div>
-            <div class="address-grid">
+            <div class="form-grid">
                 <div class="form-group">
                     <label for="logradouro">Logradouro</label>
                     <input type="text" id="logradouro" class="form-control" placeholder="Rua, Avenida...">
@@ -262,10 +286,88 @@
                     <label for="numero">Número</label>
                     <input type="text" id="numero" class="form-control" placeholder="Nº">
                 </div>
+                <div class="form-group">
+                    <label for="bairroCorrego">Bairro/Córrego</label>
+                    <input type="text" id="bairroCorrego" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="complemento">Complemento</label>
+                    <input type="text" id="complemento" class="form-control" placeholder="Apto, Bloco, Casa...">
+                </div>
+                <div class="form-group">
+                    <label for="codLogradouro">Código Logradouro</label>
+                    <input type="text" id="codLogradouro" class="form-control" placeholder="Código do logradouro">
+                </div>
+                <div class="form-group">
+                    <label for="cidade">Cidade</label>
+                    <input type="text" id="cidade" class="form-control" placeholder="Cidade">
+                </div>
+                <div class="form-group">
+                    <label for="uf">UF</label>
+                    <input type="text" id="uf" class="form-control" placeholder="UF" maxlength="2" style="text-transform: uppercase;">
+                </div>
             </div>
-            <div class="form-group">
-                <label for="bairro">Bairro</label>
-                <input type="text" id="bairro" class="form-control">
+
+            <hr style="margin: 30px 0; border: 0; border-top: 1px solid var(--border-color);">
+            <h3>Contato e Atendimento</h3>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="telefone">Telefone</label>
+                    <input type="text" id="telefone" class="form-control" placeholder="(XX) XXXXX-XXXX" maxlength="15" />
+                </div>
+                <div class="form-group">
+                    <label for="dataAtendimento">Data Atendimento</label>
+                    <input type="date" id="dataAtendimento" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="localAtendimento">Local Atendimento</label>
+                    <input type="text" id="localAtendimento" class="form-control" placeholder="Local do atendimento" />
+                </div>
+                <div class="form-group">
+                    <label for="distanciaKm">Distância (KM)</label>
+                    <input type="number" id="distanciaKm" class="form-control" placeholder="Distância em KM" step="0.1" />
+                </div>
+                <div class="form-group">
+                    <label for="procedimentos">Procedimentos</label>
+                    <input type="text" id="procedimentos" class="form-control" placeholder="Procedimentos realizados" />
+                </div>
+                <div class="form-group">
+                    <label for="horario">Horário</label>
+                    <input type="time" id="horario" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="tipoAtendimento">Tipo Atendimento</label>
+                    <input type="text" id="tipoAtendimento" class="form-control" placeholder="Tipo de atendimento" />
+                </div>
+                <div class="form-group">
+                    <label for="tipoAtendimentoCod">Tipo Atendimento Cód.</label>
+                    <input type="text" id="tipoAtendimentoCod" class="form-control" placeholder="Código do tipo de atendimento" />
+                </div>
+                <div class="form-group">
+                    <label for="transporte">Transporte</label>
+                    <input type="text" id="transporte" class="form-control" placeholder="Meio de transporte" />
+                </div>
+                <div class="form-group">
+                    <label for="motorista">Motorista</label>
+                    <input type="text" id="motorista" class="form-control" placeholder="Nome do motorista" />
+                </div>
+                <div class="form-group">
+                    <label for="horaSaida">Hora Saída</label>
+                    <input type="time" id="horaSaida" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="pacientePrincipal">Paciente Principal</label>
+                    <input type="text" id="pacientePrincipal" class="form-control" placeholder="Nome do paciente principal" />
+                </div>
+                <div class="form-group">
+                    <label for="acompanhantesVinculados">Acompanhantes Vinculados</label>
+                    <input type="text" id="acompanhantesVinculados" class="form-control" placeholder="Nomes dos acompanhantes" />
+                </div>
+                <div class="form-group">
+                    <label for="observacao">Observação</label>
+                    <textarea id="observacao" class="form-control" rows="3" placeholder="Observações adicionais"></textarea>
+                </div>
             </div>
 
             <div class="form-actions">
@@ -290,10 +392,37 @@
             <table class="table">
                 <thead>
                     <tr>
+                        <th>Data Cadastro</th>
                         <th>Nome</th>
                         <th>CNS/CPF</th>
+                        <th>Email</th>
+                        <th>Sexo</th>
+                        <th>Data Nasc.</th>
+                        <th>Nacionalidade</th>
+                        <th>Raça/Cor</th>
+                        <th>Etnia</th>
+                        <th>CEP</th>
+                        <th>Logradouro</th>
+                        <th>Nº</th>
+                        <th>Bairro/Córrego</th>
+                        <th>Complemento</th>
+                        <th>Cod Logradouro</th>
+                        <th>Cidade</th>
+                        <th>UF</th>
                         <th>Telefone</th>
-                        <th>Endereço</th>
+                        <th>Data Atend.</th>
+                        <th>Local Atend.</th>
+                        <th>Distância (KM)</th>
+                        <th>Procedimentos</th>
+                        <th>Horário</th>
+                        <th>Tipo Atend.</th>
+                        <th>Tipo Atend. Cód.</th>
+                        <th>Transporte</th>
+                        <th>Motorista</th>
+                        <th>Hora Saída</th>
+                        <th>Paciente Principal</th>
+                        <th>Acompanhantes Vinculados</th>
+                        <th>Observação</th>
                         <th>Ação</th>
                     </tr>
                 </thead>
@@ -423,35 +552,58 @@
                     const novosRegistros = [];
                     const registrosDuplicados = [];
 
+                    // Mapeamento dos cabeçalhos do CSV para as chaves do objeto pessoa
+                    const headers = parseCSVRow(lines[0].trim());
+                    const headerMap = {
+                        "Data Cadastro": "data_cadastro", "Nome": "nome", "Email": "email", "Telefone": "telefone",
+                        "CNS/CPF": "cnsCpf", "Data Nasc.": "data_nascimento", "Nacionalidade": "nacionalidade",
+                        "Raça/Cor": "raca_cor", "Etnia": "etnia", "CEP": "cep", "Logradouro": "logradouro",
+                        "Nº": "numero", "Bairro/Córrego": "bairro_corrego", "Complemento": "complemento",
+                        "Cod Logradouro": "cod_logradouro", "Cidade": "cidade", "UF": "uf", "Data Atend.": "data_atendimento",
+                        "Local": "local_atendimento", "Distância (KM)": "distancia_km", "Procedimentos": "procedimentos",
+                        "Horário": "horario", "Tipo Atend.": "tipo_atendimento", "Tipo Atend. Cód.": "tipo_atendimento_cod",
+                        "Transporte": "transporte", "Motorista": "motorista", "Hora Saída": "hora_saida",
+                        "Paciente Principal": "paciente_principal", "Acompanhantes Vinculados": "acompanhantes_vinculados",
+                        "Observação": "observacao"
+                    };
+
+
                     for (let i = 1; i < lines.length; i++) { // Pula o cabeçalho
                         const values = parseCSVRow(lines[i].trim());
-                        if (values.length < 9) continue;
+                        if (values.length === 0) continue;
 
-                        const cnsCpf = String(values[3] || '').replace(/\D/g, '');
+                        const registro = {};
+                        headers.forEach((header, index) => {
+                            const key = headerMap[header.trim()];
+                            if (key) {
+                                let value = values[index] || '';
+                                // Formata campos específicos para o formato esperado no backend
+                                if (key === 'telefone' || key === 'cep' || key === 'cnsCpf') {
+                                    value = value.replace(/\D/g, ''); // Remove caracteres não numéricos
+                                }
+                                registro[key] = value;
+                            }
+                        });
+
+                        const cnsCpf = registro.cnsCpf;
                         if (!cnsCpf) continue;
 
                         const isDuplicate = pessoas.some(p => p.cnsCpf === cnsCpf);
                         if (isDuplicate) {
-                            registrosDuplicados.push(values[0]);
+                            registrosDuplicados.push(registro.nome || 'Registro sem nome');
                         } else {
-                            novosRegistros.push({
-                                nome: values[0] || '', email: values[1] || '',
-                                telefone: String(values[2] || '').replace(/\D/g, ''),
-                                cnsCpf: cnsCpf, nascimento: values[4] || '',
-                                cep: String(values[5] || '').replace(/\D/g, ''),
-                                logradouro: values[6] || '', numero: values[7] || '',
-                                bairro: values[8] || ''
-                            });
+                            novosRegistros.push(registro);
                         }
                     }
 
                     if (novosRegistros.length === 0) {
-                        alert('Nenhum novo registro para importar. Os registros do arquivo podem já existir.');
+                        alert('Nenhum novo registro para importar. Os registros do arquivo podem já existir ou o formato está incorreto.');
                         return;
                     }
 
                     let msg = `${novosRegistros.length} novo(s) registro(s) para importar.\n${registrosDuplicados.length} registro(s) duplicado(s) foram ignorados.\nDeseja continuar?`;
-                    if (confirm(msg)) {
+                    // Substituir alert e confirm por modais customizados
+                    showCustomConfirm(msg, async () => {
                         try {
                             const response = await fetch(`${API_URL}/batch-import`, {
                                 method: 'POST',
@@ -459,13 +611,13 @@
                                 body: JSON.stringify(novosRegistros)
                             });
                             if (!response.ok) throw new Error('Falha na importação');
-                            alert('Dados importados com sucesso!');
+                            showCustomAlert('Dados importados com sucesso!');
                             carregarPessoas(); // Recarrega a lista do servidor
                         } catch (error) {
                             console.error('Erro ao importar CSV:', error);
-                            alert('Ocorreu um erro ao importar os dados.');
+                            showCustomAlert('Ocorreu um erro ao importar os dados.');
                         }
-                    }
+                    });
                 };
                 reader.readAsText(file, 'UTF-8');
                 csvFileInput.value = ''; // Permite re-selecionar o mesmo arquivo
@@ -473,13 +625,16 @@
 
             const exportarParaCSV = () => {
                 if (pessoas.length === 0) {
-                    alert('Não há dados para exportar.');
+                    showCustomAlert('Não há dados para exportar.');
                     return;
                 }
 
                 const headers = [
-                    "Nome", "Email", "Telefone", "CNS/CPF", "Data de Nascimento",
-                    "CEP", "Logradouro", "Número", "Bairro"
+                    "Data Cadastro", "Nome", "Email", "Telefone", "CNS/CPF", "Sexo", "Data Nasc.",
+                    "Nacionalidade", "Raça/Cor", "Etnia", "CEP", "Logradouro", "Nº", "Bairro/Córrego",
+                    "Complemento", "Cod Logradouro", "Cidade", "Data Atend.", "Local", "Distância (KM)",
+                    "Procedimentos", "Horário", "Tipo Atend.", "Tipo Atend. Cód.", "Transporte",
+                    "Motorista", "Hora Saída", "Paciente Principal", "Acompanhantes Vinculados", "Observação"
                 ];
 
                 // Função para garantir que os valores com vírgula fiquem entre aspas
@@ -494,15 +649,36 @@
                 const csvRows = [
                     headers.join(','), // Cabeçalho
                     ...pessoas.map(p => [
+                        escapeCSV(p.data_cadastro),
                         escapeCSV(p.nome),
                         escapeCSV(p.email),
-                        escapeCSV(formatarTelefone(p.telefone)), // Exporta formatado
-                        escapeCSV(p.cnsCpf), // Exporta apenas números
-                        escapeCSV(p.nascimento),
-                        escapeCSV(formatarCep(p.cep)), // Exporta formatado
+                        escapeCSV(formatarTelefone(p.telefone)),
+                        escapeCSV(p.cnsCpf),
+                        escapeCSV(p.sexo),
+                        escapeCSV(p.data_nascimento),
+                        escapeCSV(p.nacionalidade),
+                        escapeCSV(p.raca_cor),
+                        escapeCSV(p.etnia),
+                        escapeCSV(formatarCep(p.cep)),
                         escapeCSV(p.logradouro),
                         escapeCSV(p.numero),
-                        escapeCSV(p.bairro)
+                        escapeCSV(p.bairro_corrego),
+                        escapeCSV(p.complemento),
+                        escapeCSV(p.cod_logradouro),
+                        escapeCSV(p.cidade),
+                        escapeCSV(p.data_atendimento),
+                        escapeCSV(p.local_atendimento),
+                        escapeCSV(p.distancia_km),
+                        escapeCSV(p.procedimentos),
+                        escapeCSV(p.horario),
+                        escapeCSV(p.tipo_atendimento),
+                        escapeCSV(p.tipo_atendimento_cod),
+                        escapeCSV(p.transporte),
+                        escapeCSV(p.motorista),
+                        escapeCSV(p.hora_saida),
+                        escapeCSV(p.paciente_principal),
+                        escapeCSV(p.acompanhantes_vinculados),
+                        escapeCSV(p.observacao)
                     ].join(','))
                 ];
 
@@ -524,18 +700,44 @@
                 listaPessoas.innerHTML = '';
                 if (pessoasFiltradas.length === 0) {
                     const mensagem = pessoas.length === 0 ? 'Nenhuma pessoa cadastrada.' : 'Nenhuma pessoa encontrada para o filtro atual.';
-                    listaPessoas.innerHTML = `<tr><td colspan="5" style="text-align:center;">${mensagem}</td></tr>`;
+                    listaPessoas.innerHTML = `<tr><td colspan="32" style="text-align:center;">${mensagem}</td></tr>`; // Ajustado colspan para incluir UF
                     return;
                 }
 
                 pessoasFiltradas.forEach(pessoa => {
                     const tr = document.createElement('tr');
-                    const endereco = `${pessoa.logradouro || ''}, ${pessoa.numero || ''} - ${pessoa.bairro || ''}`;
                     tr.innerHTML = `
+                        <td>${pessoa.data_cadastro || ''}</td>
                         <td>${pessoa.nome || ''}</td>
                         <td>${formatarDocumento(pessoa.cnsCpf || '')}</td>
+                        <td>${pessoa.email || ''}</td>
+                        <td>${pessoa.sexo || ''}</td>
+                        <td>${pessoa.data_nascimento || ''}</td>
+                        <td>${pessoa.nacionalidade || ''}</td>
+                        <td>${pessoa.raca_cor || ''}</td>
+                        <td>${pessoa.etnia || ''}</td>
+                        <td>${formatarCep(pessoa.cep || '')}</td>
+                        <td>${pessoa.logradouro || ''}</td>
+                        <td>${pessoa.numero || ''}</td>
+                        <td>${pessoa.bairro_corrego || ''}</td>
+                        <td>${pessoa.complemento || ''}</td>
+                        <td>${pessoa.cod_logradouro || ''}</td>
+                        <td>${pessoa.cidade || ''}</td>
+                        <td>${pessoa.uf || ''}</td>
                         <td>${formatarTelefone(pessoa.telefone || '')}</td>
-                        <td>${endereco.length > 5 ? endereco : 'Não informado'}</td>
+                        <td>${pessoa.data_atendimento || ''}</td>
+                        <td>${pessoa.local_atendimento || ''}</td>
+                        <td>${pessoa.distancia_km || ''}</td>
+                        <td>${pessoa.procedimentos || ''}</td>
+                        <td>${pessoa.horario || ''}</td>
+                        <td>${pessoa.tipo_atendimento || ''}</td>
+                        <td>${pessoa.tipo_atendimento_cod || ''}</td>
+                        <td>${pessoa.transporte || ''}</td>
+                        <td>${pessoa.motorista || ''}</td>
+                        <td>${pessoa.hora_saida || ''}</td>
+                        <td>${pessoa.paciente_principal || ''}</td>
+                        <td>${pessoa.acompanhantes_vinculados || ''}</td>
+                        <td>${pessoa.observacao || ''}</td>
                         <td class="actions-cell">
                             <button class="btn-edit" data-id="${pessoa.id}">Editar</button>
                             <button class="btn-delete" data-id="${pessoa.id}">Excluir</button>
@@ -553,7 +755,7 @@
                 // --- Validações ---
                 // 1. Validação do CPF (se for um CPF)
                 if (cnsCpfValue.length === 11 && !validarCPF(cnsCpfValue)) {
-                    alert('CPF inválido. Por favor, verifique o número digitado.');
+                    showCustomAlert('CPF inválido. Por favor, verifique o número digitado.');
                     cnsCpfInput.focus();
                     return;
                 }
@@ -564,21 +766,43 @@
                 );
 
                 if (isDuplicate) {
-                    alert('Este CNS/CPF já está cadastrado.');
+                    showCustomAlert('Este CNS/CPF já está cadastrado.');
                     cnsCpfInput.focus();
                     return;
                 }
 
                 const pessoaData = {
+                    data_cadastro: document.getElementById('dataCadastro').value,
                     nome: document.getElementById('nome').value.trim(),
                     email: document.getElementById('email').value.trim(),
                     telefone: document.getElementById('telefone').value.replace(/\D/g, ''),
                     cnsCpf: cnsCpfValue,
-                    nascimento: document.getElementById('nascimento').value,
-                    cep: document.getElementById('cep').value.trim(),
+                    sexo: document.getElementById('sexo').value,
+                    data_nascimento: document.getElementById('dataNascimento').value,
+                    nacionalidade: document.getElementById('nacionalidade').value.trim(),
+                    raca_cor: document.getElementById('racaCor').value.trim(),
+                    etnia: document.getElementById('etnia').value.trim(),
+                    cep: document.getElementById('cep').value.replace(/\D/g, ''),
                     logradouro: document.getElementById('logradouro').value.trim(),
                     numero: document.getElementById('numero').value.trim(),
-                    bairro: document.getElementById('bairro').value.trim(),
+                    bairro_corrego: document.getElementById('bairroCorrego').value.trim(),
+                    complemento: document.getElementById('complemento').value.trim(),
+                    cod_logradouro: document.getElementById('codLogradouro').value.trim(),
+                    cidade: document.getElementById('cidade').value.trim(),
+                    uf: document.getElementById('uf').value.trim().toUpperCase(),
+                    data_atendimento: document.getElementById('dataAtendimento').value,
+                    local_atendimento: document.getElementById('localAtendimento').value.trim(),
+                    distancia_km: document.getElementById('distanciaKm').value.trim(),
+                    procedimentos: document.getElementById('procedimentos').value.trim(),
+                    horario: document.getElementById('horario').value.trim(),
+                    tipo_atendimento: document.getElementById('tipoAtendimento').value.trim(),
+                    tipo_atendimento_cod: document.getElementById('tipoAtendimentoCod').value.trim(),
+                    transporte: document.getElementById('transporte').value.trim(),
+                    motorista: document.getElementById('motorista').value.trim(),
+                    hora_saida: document.getElementById('horaSaida').value.trim(),
+                    paciente_principal: document.getElementById('pacientePrincipal').value.trim(),
+                    acompanhantes_vinculados: document.getElementById('acompanhantesVinculados').value.trim(),
+                    observacao: document.getElementById('observacao').value.trim()
                 };
 
                 try {
@@ -600,14 +824,15 @@
                     }
 
                     if (!response.ok) {
-                        throw new Error('Falha ao salvar os dados.');
+                        const errorData = await response.json();
+                        throw new Error(errorData.message || 'Falha ao salvar os dados.');
                     }
 
                     resetFormState();
                     carregarPessoas(); // Recarrega a lista do servidor
                 } catch (error) {
                     console.error('Erro ao salvar:', error);
-                    alert('Não foi possível salvar os dados no servidor.');
+                    showCustomAlert(`Não foi possível salvar os dados no servidor: ${error.message}`);
                 }
             });
 
@@ -617,15 +842,38 @@
                 if (!pessoa) return;
 
                 // Preenche o formulário com os dados da pessoa
+                document.getElementById('dataCadastro').value = pessoa.data_cadastro || '';
                 document.getElementById('nome').value = pessoa.nome || '';
                 document.getElementById('email').value = pessoa.email || '';
                 document.getElementById('telefone').value = formatarTelefone(pessoa.telefone || '');
                 document.getElementById('cnsCpf').value = formatarDocumento(pessoa.cnsCpf || '');
-                document.getElementById('nascimento').value = pessoa.nascimento || '';
+                document.getElementById('sexo').value = pessoa.sexo || '';
+                document.getElementById('dataNascimento').value = pessoa.data_nascimento || '';
+                document.getElementById('nacionalidade').value = pessoa.nacionalidade || '';
+                document.getElementById('racaCor').value = pessoa.raca_cor || '';
+                document.getElementById('etnia').value = pessoa.etnia || '';
                 document.getElementById('cep').value = formatarCep(pessoa.cep || '');
                 document.getElementById('logradouro').value = pessoa.logradouro || '';
                 document.getElementById('numero').value = pessoa.numero || '';
-                document.getElementById('bairro').value = pessoa.bairro || '';
+                document.getElementById('bairroCorrego').value = pessoa.bairro_corrego || '';
+                document.getElementById('complemento').value = pessoa.complemento || '';
+                document.getElementById('codLogradouro').value = pessoa.cod_logradouro || '';
+                document.getElementById('cidade').value = pessoa.cidade || '';
+                document.getElementById('uf').value = pessoa.uf || '';
+                document.getElementById('dataAtendimento').value = pessoa.data_atendimento || '';
+                document.getElementById('localAtendimento').value = pessoa.local_atendimento || '';
+                document.getElementById('distanciaKm').value = pessoa.distancia_km || '';
+                document.getElementById('procedimentos').value = pessoa.procedimentos || '';
+                document.getElementById('horario').value = pessoa.horario || '';
+                document.getElementById('tipoAtendimento').value = pessoa.tipo_atendimento || '';
+                document.getElementById('tipoAtendimentoCod').value = pessoa.tipo_atendimento_cod || '';
+                document.getElementById('transporte').value = pessoa.transporte || '';
+                document.getElementById('motorista').value = pessoa.motorista || '';
+                document.getElementById('horaSaida').value = pessoa.hora_saida || '';
+                document.getElementById('pacientePrincipal').value = pessoa.paciente_principal || '';
+                document.getElementById('acompanhantesVinculados').value = pessoa.acompanhantes_vinculados || '';
+                document.getElementById('observacao').value = pessoa.observacao || '';
+
 
                 // Atualiza a interface para o modo de edição
                 btnSubmit.textContent = 'Atualizar Cadastro';
@@ -649,9 +897,9 @@
                     startEdit(id);
                 } else if (target.classList.contains('btn-delete')) {
                     const id = parseInt(target.getAttribute('data-id'), 10);
-                    if (confirm('Tem certeza que deseja excluir este cadastro?')) {
+                    showCustomConfirm('Tem certeza que deseja excluir este cadastro?', () => {
                         deletePessoa(id);
-                    }
+                    });
                 }
             });
 
@@ -666,7 +914,7 @@
                     carregarPessoas(); // Recarrega a lista
                 } catch (error) {
                     console.error('Erro ao deletar:', error);
-                    alert('Não foi possível deletar o registro.');
+                    showCustomAlert('Não foi possível deletar o registro.');
                 }
             };
 
@@ -677,7 +925,7 @@
                     renderizarTabela();
                 } catch (error) {
                     console.error('Erro ao carregar pessoas:', error);
-                    listaPessoas.innerHTML = `<tr><td colspan="5" style="text-align:center; color: red;">Falha ao conectar com o servidor.</td></tr>`;
+                    listaPessoas.innerHTML = `<tr><td colspan="31" style="text-align:center; color: red;">Falha ao conectar com o servidor.</td></tr>`; // Ajustado colspan
                 }
             };
 
@@ -711,14 +959,14 @@
             // Função para buscar e preencher endereço via CEP
             const preencherEndereco = (data) => {
                 if (data.erro) {
-                    alert('CEP não encontrado. Por favor, verifique o número digitado.');
+                    showCustomAlert('CEP não encontrado. Por favor, verifique o número digitado.');
                     return;
                 }
                 document.getElementById('logradouro').value = data.logradouro || '';
-                document.getElementById('bairro').value = data.bairro || '';
+                document.getElementById('bairroCorrego').value = data.bairro || '';
+                document.getElementById('cidade').value = data.localidade || ''; // Adicionado preenchimento da cidade
                 // Alguns campos como cidade e UF não estão no formulário, mas poderiam ser adicionados
-                // document.getElementById('cidade').value = data.localidade || '';
-                // document.getElementById('uf').value = data.uf || '';
+                document.getElementById('uf').value = data.uf || '';
                 document.getElementById('numero').focus(); // Move o foco para o campo de número
             };
 
@@ -736,7 +984,7 @@
                     const data = await response.json();
                     preencherEndereco(data);
                 } catch (error) {
-                    alert('Não foi possível buscar o CEP. Tente novamente.');
+                    showCustomAlert('Não foi possível buscar o CEP. Tente novamente.');
                     console.error("Erro ao buscar CEP:", error);
                 } finally {
                     cepInput.disabled = false;
@@ -745,6 +993,71 @@
             };
 
             cepInput.addEventListener('blur', buscarCep);
+
+            // --- Funções para Modais Customizados (substituindo alert/confirm) ---
+            function showCustomAlert(message) {
+                const modalHtml = `
+                    <div id="customAlertModal" style="
+                        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                        background-color: rgba(0,0,0,0.5); display: flex;
+                        justify-content: center; align-items: center; z-index: 1000;
+                    ">
+                        <div style="
+                            background-color: white; padding: 25px; border-radius: 10px;
+                            box-shadow: 0 5px 15px rgba(0,0,0,0.3); text-align: center;
+                            max-width: 400px; width: 90%;
+                        ">
+                            <p style="margin-bottom: 20px; font-size: 1.1em;">${message}</p>
+                            <button id="customAlertOkBtn" style="
+                                background-color: var(--primary-color); color: white;
+                                padding: 10px 20px; border: none; border-radius: 5px;
+                                cursor: pointer; font-size: 1em;
+                            ">OK</button>
+                        </div>
+                    </div>
+                `;
+                document.body.insertAdjacentHTML('beforeend', modalHtml);
+                document.getElementById('customAlertOkBtn').onclick = () => {
+                    document.getElementById('customAlertModal').remove();
+                };
+            }
+
+            function showCustomConfirm(message, onConfirm) {
+                const modalHtml = `
+                    <div id="customConfirmModal" style="
+                        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                        background-color: rgba(0,0,0,0.5); display: flex;
+                        justify-content: center; align-items: center; z-index: 1000;
+                    ">
+                        <div style="
+                            background-color: white; padding: 25px; border-radius: 10px;
+                            box-shadow: 0 5px 15px rgba(0,0,0,0.3); text-align: center;
+                            max-width: 400px; width: 90%;
+                        ">
+                            <p style="margin-bottom: 20px; font-size: 1.1em;">${message}</p>
+                            <button id="customConfirmYesBtn" style="
+                                background-color: var(--primary-color); color: white;
+                                padding: 10px 20px; border: none; border-radius: 5px;
+                                cursor: pointer; font-size: 1em; margin-right: 10px;
+                            ">Sim</button>
+                            <button id="customConfirmNoBtn" style="
+                                background-color: var(--secondary-color); color: white;
+                                padding: 10px 20px; border: none; border-radius: 5px;
+                                cursor: pointer; font-size: 1em;
+                            ">Não</button>
+                        </div>
+                    </div>
+                `;
+                document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+                document.getElementById('customConfirmYesBtn').onclick = () => {
+                    document.getElementById('customConfirmModal').remove();
+                    onConfirm();
+                };
+                document.getElementById('customConfirmNoBtn').onclick = () => {
+                    document.getElementById('customConfirmModal').remove();
+                };
+            }
 
             // Carrega os dados do servidor ao iniciar a página
             carregarPessoas();
