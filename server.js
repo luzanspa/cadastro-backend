@@ -49,7 +49,13 @@ app.use(express.json());
 // --- Servir Arquivos Estáticos (o Frontend) ---
 // Esta linha diz ao Express para servir os arquivos da pasta atual (onde está o server.js)
 // Isso fará com que o cadastro_pessoal.html seja acessível.
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname)));
+
+// --- Rota Principal (Frontend) ---
+// Garante que a rota raiz '/' sirva o arquivo index.html.
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 
 // --- Rotas da API (Endpoints) ---
